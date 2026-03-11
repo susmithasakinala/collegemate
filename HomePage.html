@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <title>CollegeMate - Home</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background-color: #0099ff;
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .navbar-brand {
+      color: white;
+      font-size: 24px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .navbar-brand span { color: #cceeff; }
+
+    .nav-btn {
+      color: white;
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover { background: white; color: #0099ff; }
+
+    .cart-btn {
+      position: relative;
+      color: white;
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.2s;
+    }
+
+    .cart-btn:hover { background: white; color: #0099ff; }
+
+    .cart-count {
+      position: absolute;
+      top: -8px; right: -8px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      width: 18px; height: 18px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #e0f4ff 0%, #f0e6ff 100%);
+      min-height: calc(100vh - 60px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 900;
+      color: #003366;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span { color: #0099ff; }
+
+    .hero-sub {
+      color: #555;
+      font-size: clamp(14px, 3vw, 20px);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .hero-btn {
+      padding: 13px 30px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid #0099ff;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .hero-btn-primary {
+      background: #0099ff;
+      color: white;
+    }
+
+    .hero-btn-primary:hover {
+      background: #007acc;
+      border-color: #007acc;
+      color: white;
+      text-decoration: none;
+    }
+
+    .hero-btn-secondary {
+      background: white;
+      color: #0099ff;
+    }
+
+    .hero-btn-secondary:hover {
+      background: #e0f4ff;
+      text-decoration: none;
+      color: #0099ff;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 60px 20px;
+      background: white;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-weight: 800;
+      color: #003366;
+      margin-bottom: 40px;
+      font-size: clamp(22px, 5vw, 32px);
+    }
+
+    .feature-card {
+      background: #f0f8ff;
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+      height: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,153,255,0.15);
+    }
+
+    .feature-icon { font-size: 40px; margin-bottom: 14px; }
+
+    .feature-card h5 {
+      font-weight: 700;
+      color: #003366;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      color: #666;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #003366;
+      color: #cce0ff;
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+    }
+
+    /* ── RESPONSIVE NAV ── */
+    @media (max-width: 480px) {
+      .navbar { padding: 10px 14px; }
+      .nav-btn, .cart-btn { padding: 5px 10px; font-size: 12px; margin-left: 4px; }
+      .navbar-brand { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="HomePage.html">College<span>Mate</span></a>
+    <div>
+      <button class="cart-btn" onclick="window.location.href='cart.html'">
+        🛒 Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="nav-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero-title">
+        Welcome to<br/><span>CollegeMate</span>
+      </div>
+      <p class="hero-sub">Rent academic essentials instantly within your campus. Safe, easy, and trusted.</p>
+      <div class="hero-btns">
+        <a href="uploaditem.html" class="hero-btn hero-btn-primary">📦 Upload Item</a>
+        <a href="rentitems.html" class="hero-btn hero-btn-secondary">🔍 Rent Item</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      <h2>Why CollegeMate?</h2>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-lg-3 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h5>Verified Students Only</h5>
+            <p>Only students from your campus can access the platform. No strangers, no fake accounts.</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h5>Earn Pocket Money</h5>
+            <p>List your idle items and earn every time a student rents them from you.</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <h5>Digital Agreements</h5>
+            <p>Every rental comes with a clear agreement — both sides are protected.</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <h5>Ratings & Reviews</h5>
+            <p>Know who you are dealing with. Reviews keep everyone accountable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p style="margin:0;">@2025 CollegeMate — Anurag University, Hyderabad &nbsp;|&nbsp; 987654321 | 897654321</p>
+  </footer>
+
+  <script>
+    // Update cart count
+    var cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+    document.getElementById('cartCount').textContent = cart.length;
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

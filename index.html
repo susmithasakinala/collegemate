@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - CollegeMate</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e6ccff 0%, #cce5ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 36px 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.13);
+    }
+
+    .brand-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+
+    .brand-title .green  { color: rgb(13,146,86); }
+    .brand-title .purple { color: rgb(156,17,133); }
+
+    .brand-sub {
+      text-align: center;
+      color: gray;
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #ddd;
+      font-size: 14px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .form-input:focus { border-color: #0099ff; }
+
+    .error-msg {
+      color: #cc0000;
+      font-size: 12px;
+      background: #fff0f0;
+      border: 1px solid #ffcccc;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #0099ff, #0066cc);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: opacity 0.2s;
+    }
+
+    .login-btn:hover { opacity: 0.92; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 14px;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 11px;
+      background: white;
+      color: #444;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+      margin-bottom: 20px;
+    }
+
+    .google-btn:hover { background: #f5f5f5; }
+
+    .google-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    hr { border-color: #f0f0f0; margin: 0 0 14px; }
+
+    .footer-text {
+      text-align: center;
+      color: gray;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .contact-text {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .contact-text span { color: #0099ff; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .login-card { padding: 30px 20px 24px; }
+      .brand-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+
+    <div class="brand-title">
+      <span class="green">College</span><span class="purple">Mate</span>
+    </div>
+    <p class="brand-sub">Campus Rental &amp; Sharing Platform</p>
+
+    <p style="text-align:center; font-weight:700; color:#222; font-size:15px; margin-bottom:20px;">
+      Student Login Portal
+    </p>
+
+    <div class="error-msg" id="errorMsg">
+      ⚠️ Please enter your Hall Ticket Number and Password.
+    </div>
+
+    <label class="form-label">Hall Ticket Number</label>
+    <input type="text" id="hallTicket" class="form-input" placeholder="e.g. 21BCS1234"/>
+
+    <label class="form-label">Password</label>
+    <input type="password" id="password" class="form-input" placeholder="Enter your password"/>
+
+    <button class="login-btn" onclick="doLogin()">Login</button>
+
+    <div class="divider">or continue with</div>
+
+    <button class="google-btn" onclick="googleLogin()">
+      <!-- Google SVG icon -->
+      <svg class="google-icon" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="none" d="M0 0h48v48H0z"/>
+      </svg>
+      Sign in with Google
+    </button>
+
+    <hr/>
+    <p class="footer-text">@2025 Anurag University Telangana, Hyderabad</p>
+    <p class="contact-text">Contact Us: <span>987654321</span> | <span>897654321</span></p>
+
+  </div>
+
+  <script>
+    function doLogin() {
+      var hall = document.getElementById('hallTicket').value.trim();
+      var pass = document.getElementById('password').value.trim();
+      var errDiv = document.getElementById('errorMsg');
+      if (!hall || !pass) {
+        errDiv.style.display = 'block';
+        return;
+      }
+      errDiv.style.display = 'none';
+      sessionStorage.setItem('loggedIn', 'true');
+      sessionStorage.setItem('userName', hall);
+      window.location.href = 'HomePage.html';
+    }
+
+    function googleLogin() {
+      // Google login placeholder — connects to Google OAuth in production
+      sessionStorage.setItem('loggedIn', 'true');
+      sessionStorage.setItem('userName', 'Google User');
+      window.location.href = 'HomePage.html';
+    }
+
+    // Allow Enter key to login
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doLogin();
+    });
+  </script>
+
+</body>
+</html>

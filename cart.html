@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Cart - CollegeMate</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    body { background-color:#f0f8ff; font-family:'Roboto',sans-serif; }
+    .navbar { background-color:#0099ff; padding:12px 24px; }
+    .navbar-brand { color:white; font-size:22px; font-weight:bold; }
+    .navbar-brand span { color:#cceeff; }
+    .back-btn { color:white; background:transparent; border:2px solid white;
+      border-radius:8px; padding:6px 16px; font-size:14px; cursor:pointer; }
+    .back-btn:hover { background:white; color:#0099ff; }
+    .cart-card { background:white; border-radius:14px;
+      box-shadow:0 2px 14px rgba(0,0,0,0.09); margin-bottom:18px; overflow:hidden; }
+    .cart-img { width:110px; height:110px; object-fit:cover; border-radius:10px; }
+    .cart-body { padding:16px; flex:1; }
+    .cart-item-name { font-weight:bold; color:#222; font-size:16px; }
+    .cart-price { color:#0099ff; font-weight:bold; font-size:14px; }
+    .cart-owner { color:gray; font-size:12px; }
+    .reminder-tag { background:#fffbe6; border:1px solid #ffe066; border-radius:8px;
+      padding:6px 12px; font-size:12px; color:#cc7700; margin-top:8px; display:inline-block; }
+    .overdue-tag { background:#fff0f0; border:1px solid #ffaaaa; border-radius:8px;
+      padding:6px 12px; font-size:12px; color:#cc0000; margin-top:8px; display:inline-block; }
+    .ok-tag { background:#e6fff0; border:1px solid #99eebb; border-radius:8px;
+      padding:6px 12px; font-size:12px; color:#007744; margin-top:8px; display:inline-block; }
+    .remove-btn { background:#ff4444; color:white; border:none; border-radius:8px;
+      padding:7px 16px; font-size:13px; cursor:pointer; margin-top:8px; }
+    .remove-btn:hover { background:#cc0000; }
+    .empty-cart { text-align:center; padding:70px; color:gray; }
+    .summary-box { background:white; border-radius:14px;
+      box-shadow:0 2px 14px rgba(0,0,0,0.09); padding:22px; margin-bottom:24px; }
+    .clear-btn { background:#888; color:white; border:none; border-radius:8px;
+      padding:8px 20px; font-size:14px; cursor:pointer; }
+    .clear-btn:hover { background:#555; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar d-flex justify-content-between align-items-center">
+  <span class="navbar-brand">College<span>Mate</span></span>
+  <div>
+    <button class="back-btn" onclick="window.location.href='HomePage.html'">🏠 Home</button>
+    <button class="back-btn" style="margin-left:8px;" onclick="window.location.href='rentitems.html'">🔍 Browse</button>
+  </div>
+</nav>
+
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 style="font-weight:bold; color:#222; margin:0;">🛒 My Rental Cart</h4>
+    <button class="clear-btn" onclick="clearCart()">🗑️ Clear All</button>
+  </div>
+
+  <!-- REMINDER ALERT -->
+  <div id="overdueAlert" style="display:none; background:#fff0f0; border:1px solid #ffaaaa;
+    border-radius:12px; padding:14px; margin-bottom:18px;">
+    <strong style="color:#cc0000;">⚠️ Return Reminder!</strong>
+    <p id="overdueText" style="color:#cc0000; margin:4px 0 0; font-size:13px;"></p>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-box" id="summaryBox" style="display:none;">
+    <div class="row text-center">
+      <div class="col-4">
+        <h4 style="color:#0099ff; font-weight:bold; margin:0;" id="totalItems">0</h4>
+        <p style="color:gray; font-size:12px; margin:0;">Items Rented</p>
+      </div>
+      <div class="col-4">
+        <h4 style="color:#cc0000; font-weight:bold; margin:0;" id="overdueCount">0</h4>
+        <p style="color:gray; font-size:12px; margin:0;">Overdue</p>
+      </div>
+      <div class="col-4">
+        <h4 style="color:#00aa44; font-weight:bold; margin:0;" id="onTimeCount">0</h4>
+        <p style="color:gray; font-size:12px; margin:0;">On Time</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART ITEMS -->
+  <div id="cartItems"></div>
+
+  <!-- EMPTY -->
+  <div class="empty-cart" id="emptyCart" style="display:none;">
+    <div style="font-size:56px;">🛒</div>
+    <h5 style="margin-top:12px;">Your cart is empty</h5>
+    <p>Browse items and add them to your cart!</p>
+    <button onclick="window.location.href='rentitems.html'"
+      style="background:#0099ff; color:white; border:none; border-radius:10px;
+      padding:11px 28px; font-size:15px; font-weight:bold; cursor:pointer; margin-top:8px;">
+      🔍 Browse Items
+    </button>
+  </div>
+</div>
+
+<script>
+  function loadCart() {
+    var cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+    var container = document.getElementById('cartItems');
+    var emptyDiv = document.getElementById('emptyCart');
+    var summaryBox = document.getElementById('summaryBox');
+    var overdueAlert = document.getElementById('overdueAlert');
+
+    if (cart.length === 0) {
+      container.innerHTML = '';
+      emptyDiv.style.display = 'block';
+      summaryBox.style.display = 'none';
+      return;
+    }
+
+    emptyDiv.style.display = 'none';
+    summaryBox.style.display = 'block';
+
+    var now = new Date();
+    var overdueItems = [];
+    var onTimeCount = 0;
+
+    document.getElementById('totalItems').textContent = cart.length;
+
+    container.innerHTML = cart.map(function(item, index) {
+      var returnTimeStr = '';
+      var reminderHTML = '';
+
+      if (item.returnTime) {
+        var returnDate = new Date(item.returnTime);
+        var diff = returnDate - now;
+        var diffHours = diff / (1000 * 60 * 60);
+
+        if (diff < 0) {
+          // Overdue
+          var hoursLate = Math.abs(Math.floor(diffHours));
+          overdueItems.push(item.name + ' (overdue by ' + hoursLate + ' hour(s))');
+          reminderHTML = '<div class="overdue-tag">🔴 OVERDUE — Return immediately! ₹' + (hoursLate * 100) + ' fine accrued</div>';
+        } else if (diffHours <= 2) {
+          reminderHTML = '<div class="reminder-tag">⏰ Return in less than 2 hours! Due: ' + returnDate.toLocaleString('en-IN') + '</div>';
+          onTimeCount++;
+        } else {
+          reminderHTML = '<div class="ok-tag">✅ Return by: ' + returnDate.toLocaleString('en-IN') + '</div>';
+          onTimeCount++;
+        }
+      } else {
+        reminderHTML = '<div class="reminder-tag">⏰ No return time set</div>';
+      }
+
+      var rentedDate = item.rentedAt ? new Date(item.rentedAt).toLocaleDateString('en-IN') : 'Today';
+
+      return '<div class="cart-card">' +
+        '<div class="d-flex align-items-start p-3">' +
+        '<img src="' + (item.img || 'https://via.placeholder.com/110') + '" class="cart-img mr-3" ' +
+        'onerror="this.src=\'https://via.placeholder.com/110x110?text=Item\'"/>' +
+        '<div class="cart-body">' +
+        '<div class="cart-item-name">' + item.name + '</div>' +
+        '<div class="cart-price">💰 ' + item.price + '</div>' +
+        '<div class="cart-owner">👤 Owner: ' + item.owner + ' &nbsp;|&nbsp; 📅 Rented: ' + rentedDate + '</div>' +
+        '<div class="cart-owner">🎓 Rented by: ' + item.rentedBy + ' (' + item.hallTicket + ')</div>' +
+        reminderHTML +
+        '<br/><button class="remove-btn" onclick="removeItem(' + index + ')">🗑️ Remove</button>' +
+        '</div></div></div>';
+    }).join('');
+
+    // Update summary
+    document.getElementById('overdueCount').textContent = overdueItems.length;
+    document.getElementById('onTimeCount').textContent = onTimeCount;
+
+    // Show overdue alert
+    if (overdueItems.length > 0) {
+      overdueAlert.style.display = 'block';
+      document.getElementById('overdueText').textContent =
+        'Please return these items immediately: ' + overdueItems.join(', ');
+    }
+  }
+
+  function removeItem(index) {
+    var cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+    cart.splice(index, 1);
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    loadCart();
+  }
+
+  function clearCart() {
+    if (confirm('Are you sure you want to clear all items from your cart?')) {
+      sessionStorage.setItem('cart', '[]');
+      loadCart();
+    }
+  }
+
+  loadCart();
+
+  // Auto refresh every 60 seconds to update overdue status
+  setInterval(loadCart, 60000);
+</script>
+</body>
+</html>

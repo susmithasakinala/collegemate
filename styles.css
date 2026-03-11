@@ -1,0 +1,53 @@
+.bg {
+background-color: #e6ccff;
+height: 100vh;
+width: 100%;
+background-size: cover;
+}
+
+.box {
+display: flex;
+justify-content: center;
+}
+
+.im1 {
+height: 50px;
+width: 60px;
+margin: 15px;
+border-radius: 10px;
+}
+
+.cad1 {
+height:500px;
+width: 600px;
+border-radius: 20px;
+background-color: white;
+margin: 180px;
+}
+
+.bo {
+margin: 20px;
+}
+
+input {
+width: 50%;
+padding: 12px;
+margin: 10px 0;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 14px;
+}
+
+button {
+height:40px;
+width: 80px;
+margin: 10px;
+background-color: #33ccff;
+color: white;
+border-width: 0px;
+border-radius: 10px;
+}
+
+button:hover {
+background-color: #2993a1;
+}
